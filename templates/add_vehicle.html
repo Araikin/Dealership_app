@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title> Add Vehicle </title>
+    </head>
+    <body>
+        {% block content %}
+        <h1> Add Vehicle </h1>
+        <form action="{{ url_for('add_vehicle') }}" method="post" class="add_vehicle">
+            <div id="vehicle_type">
+                <label for="vtype" class="required">Vehicle type: </label>
+                <select name="vtype" onchange="ShowHideDiv(this);" required>
+                    <option value="" selected disabled hidden>Select</option>
+                    <option value="Car">Car</option>
+                    <option value="SUV">SUV</option>
+                    <option value="Convertible">Convertible</option>
+                    <option value="VanMinivan">Van/Minivan</option>
+                    <option value="Truck">Truck</option>
+                </select>
+            </div>
+            <div id="if_car" style="display:none">
+                <br>
+                <label for="doors_count" class="required">Number of doors: </label>
+                <input type="number" value="" min="0" max="30" step="1" name="doors_count" placeholder="5">
+            </div>
+            <div id="if_suv" style="display: none">
+                <br>
+                <label for="drivetrain_type" class="required">Drivetrain type: </label>
+                <input type="text" value=""  name="drivetrain_type" placeholder="AWD">
+                <label for="cupholders_count" class="required">Cupholders count:</label>
+                <input type="number" value="" min="0" max="30" step="1" name="cupholders_count" placeholder="5">
+            </div>
+            <div id="if_convertible" style="display: none">
+                <br>
+                <label for="roof_type" class="required">Roof type: </label>
+                <input type="text" value=""  name="roof_type" placeholder="Textile">
+                <label for="back_seat_count" class="required">Back seats count:</label>
+                <input type="number" value="" min="0" max="10" step="1" name="back_seat_count" placeholder="2">
+            </div>
+            <div id="if_vanminivan" style="display: none">
+                <br>
+                <label for="has_back_door" class="required">Has back door:</label>
+                <input type="text" value="" name="has_back_door" placeholder="Yes/No">
+            </div>
+            <div id="if_truck" style="display: none">
+                <br>
+                <label for="cover_type">Cargo cover type: </label>
+                <input type="text" value="" name="cover_type" placeholder="Rolling">
+                <label for="rear_axles_count" class="required">Rear axles count:</label>
+                <input type="number" value="" min="0" max="50" step="1" name="rear_axles_count" placeholder="2">
+                <label for="cargo_capacity" class="required">Cargo capacity:</label>
+                <input type="number" value="" min="0" max="100" step="0.5" name="cargo_capacity" placeholder="15">
+            </div>
+            <br>
+            <label for="vin" class="required">Vin:</label>
+            <input type="text" name="vin" value="" placeholder="Enter VIN" required>
+            <br><br>
+            <label for="manufacturer" class="required">Manufacturer:</label>
+            <select name="manufacturer" required>
+                <option value="" selected disabled hidden>Select</option>
+                {% for m_name in m_list %}
+                    <option value="{{ m_name }}">{{ m_name }}</option>
+                {% endfor %}
+            </select>
+            <br><br>
+            <label for="model_name" class="required">Model: </label>
+            <input type="text" name="model_name" value="" placeholder="Enter Model" required>
+            <br><br>
+            <label for="model_year" class="required">Year:</label>
+            <input type="number" min="1900" max="{{ curr_year + 1 }}" step="1" name="model_year" value="" placeholder="Enter Year" title="test" required>
+            <br><br>
+            <label for="colors" class="required">Select color(s):</label>
+            <select name="colors" id="colors" multiple required>
+                {% for color in colors %}
+                    <option value="{{ color }}">{{ color }}</option>
+                {% endfor %}
+            </select>
+            <br><br>
+            <label for="invoice_price" class="required">Invoice price:</label>
+            <input type="number" min="0.00" step="0.01" name="invoice_price" value="" placeholder="Enter Price" required>
+            <br><br>
+            <label for="description">Description: (optional)</label>
+            <br>
+            <textarea name="description" rows="3" placeholder="Enter here"></textarea>
+            <br><br>
+            <input type="submit" value="Add Vehicle">
+            <script>
+                let mySelect = new vanillaSelectBox("#colors");
+                mySelect.enable();
+
+                function setRequired(val, id) {
+                    let input = document.getElementById(id).getElementsByTagName("input");
+                    for(let i = 0; i < input.length; i++) {
+                        input[i].required = val
+                    }
+                }
+                function ShowHideDiv(that) {
+                    if (that.value === "VanMinivan") {
+                        document.getElementById("if_vanminivan").style.display = "block";
+                        setRequired(true, "if_vanminivan")
+                    } else {
+                        document.getElementById("if_vanminivan").style.display = "none";
+                        setRequired(false, "if_vanminivan")
+                    }
+                    if (that.value === "Truck") {
+                        document.getElementById("if_truck").style.display = "block";
+                        setRequired(true, "if_truck")
+                        document.getElementById("if_truck").getElementsByTagName("input")[0].required = false;
+                    } else {
+                        document.getElementById("if_truck").style.display = "none";
+                        setRequired(false, "if_truck")
+                    }
+                    if (that.value === "SUV") {
+                        document.getElementById("if_suv").style.display = "block";
+                        setRequired(true, "if_suv")
+                        setRequired(true, "if_suv")
+                    } else {
+                        document.getElementById("if_suv").style.display = "none";
+                        setRequired(false, "if_suv")
+                        setRequired(false, "if_suv")
+                    }
+                    if (that.value === "Convertible") {
+                        document.getElementById("if_convertible").style.display = "block";
+                        setRequired(true, "if_convertible")
+                    } else {
+                        document.getElementById("if_convertible").style.display = "none";
+                        setRequired(false, "if_convertible")
+                    }
+                    if (that.value === "Car") {
+                        document.getElementById("if_car").style.display = "block";
+                        setRequired(true, "if_car")
+                    } else {
+                        document.getElementById("if_car").style.display = "none";
+                        setRequired(false, "if_car")
+                    }
+                }
+            </script>
+        </form>
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title> Parts Statistics </title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        {% block content %}
+
+        <h1> Parts Statistics </h1>
+        <a href={{ url_for('reports') }}>Back to all reports</a>
+        <table>
+           <thead>
+               <tr>
+                   <th>No.</th>
+                   <th>Vendor Name</th>
+                   <th>Number of Parts</th>
+                   <th>Total Amount Spent</th>
+               </tr>
+           </thead>
+           <tbody>
+               {% for row in data %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                </tr>
+               {% endfor %}
+           </tbody>
+        </table>
+        {% endblock %}
+    </body>
+</html>

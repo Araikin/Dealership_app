@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+    <title> Search Vehicle </title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        {% block content %}
+        <h3>VEHICLE DETAILS</h3>
+        <div class="list">
+            <b>Vin</b>: {{ details[0] }} <br>
+            <b>Vehicle type</b>: {{ details[1] }} <br>
+            <b>Manufacturer</b>: {{ details[2] }} <br>
+            <b>Model name</b>: {{ details[3] }} <br>
+            <b>Model year</b>: {{ details[4] }} <br>
+            <b>Color(s)</b>: {{ details[5] }} <br>
+            <b>List Price</b>: {{ details[8] }} <br>
+            {% if is_inventory_clerk %}
+                <b>Invoice Price</b>: {{ details[7] }} <br>
+            {% endif %}
+            {% if details[1] == 'Car' %}
+                <b>Number of doors</b>: {{ details[11] }}<br>
+            {% elif details[1] == 'SUV' %}
+                <b>Drivetrain type</b>: {{ details[13] }}<br>
+                <b>Number of cupholders</b>: {{ details[14] }}<br>
+            {% elif details[1] == 'Convertible' %}
+                <b>Number of back seats</b>: {{ details[10] }}<br>
+                <b>Roof type</b>: {{ details[9] }}<br>
+            {% elif details[1] == 'Truck' %}
+                <b>Cargo capacity</b>: {{ details[15] }}<br>
+                <b>Cover type</b>: {{ details[16] }}<br>
+                <b>Number of rear axles</b>: {{ details[17] }}<br>
+            {% elif details[1] == 'Van/Minivan' %}
+                <b>Has back door</b>: {{ details[12] }}<br>                
+            {% endif %}
+            {% if is_sales_person and status == 'Available' %}
+                <br>
+                <a href="{{ url_for('sell_vehicle', vin=vin) }}">Sell vehicle</a>
+                <br>
+            {% endif %}
+            {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for message in messages %}
+                        <p style="color: blue"><b>Message: </b>{{ message }}</p>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+            {% if is_owner_manager %}
+            <br>
+            <b>Invoice price</b>: {{ details[7] }}<br>
+            <b>Added by</b>: {{ details[18] }}<br>
+            <b>Date added</b>: {{ details[6] }}<br>
+                {% if details[19] %}
+                    <br>
+        </div>        
+        <h3>SALE INFO</h3>
+        <div class="list">           
+                    <b>List price</b>: {{ details[8] }}<br>
+                    <b>Sold price</b>: {{ details[19] }}<br>
+                    <b>Sale date</b>: {{ details[20] }}<br>
+                    <b>Sold by</b>: {{ details[21] }}<br>
+        </div>            
+        <h3>CUSTOMER INFORMATION</h3>
+        <div class="list">
+                    {% if details[22] == 'Business' %}
+                        <b>Customer</b>: {{ details[26] }}<br>
+                        <b>Contact name</b>: {{ details[27] }}<br>
+                        <b>Contact title</b>: {{ details[28] }}<br>
+                    {% elif details[22] == 'Individual' %}
+                        <b>Customer</b>: {{ details[29] }}<br>
+                    {% endif %}
+                    <b>Phone number</b>: {{ details[23] }}<br>
+                    <b>Email</b>: {{ details[24] }}<br>
+                    <b>Address</b>: {{ details[25] }}<br> 
+                {% endif %}
+        </div>        
+                {% if repairs_info %}
+                    <br>
+        <h3>REPAIRS</h3>
+        <div class="list">
+                {% for repair in repairs_info %}
+                    <b>Service writer</b>: {{ repair[6] }}<br>
+                    <b>Start date</b>: {{ repair[0] }}<br>
+                    <b>End date</b>: {% if repair[1] == None %}
+                                        -
+                                    {% else %}
+                                       {{ repair[1] }}
+                                    {% endif %}<br>
+                    <b>Labor charges</b>: {{ repair[3] }}<br>
+                    <b>Parts cost</b>: {{ repair[2] }}<br>
+                    <b>Total cost</b>: {{ repair[4] }}<br>
+                    <b>Customer</b>: {{ repair[5] }}<br>
+                    <br>
+                {% endfor %}
+            {% endif %}
+        </div>        
+            {% endif %}
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title> Repairs Report</title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        {% block content %}
+
+        <h1> Repairs by Manufacturer/Type/Model </h1>
+        <a href={{ url_for('reports') }}>Back to all reports</a>
+        {% if not manufacturer %}
+        <table class ="table table-bordered table-hover" border="1" cellpadding="5" cellspacing="5">
+            <thead class="thead-light">
+            <tr>
+                <th>No.</th>
+                <th scope="col">Manufacturer</th>
+                <th scope="col">Count of Repairs</th>
+                <th scope="col">Sum of All Part Costs</th>
+                <th scope="col">Sum of all Labor Costs</th>
+                <th scope="col">Sum of all Total Repair Costs</th>
+            </tr>
+            </thead>
+            <tbody>
+              {% for manufacturer in manufacturers %}
+              <tr>
+                  <td>{{ loop.index }}</td>
+                  <td><a href="{{ url_for('repairs_by', manufacturer=manufacturer[0]) }}">{{ manufacturer[0] }}</a></td>
+                  <td>{{ manufacturer[1] }}</td>
+                  <td>{{ manufacturer[2] }}</td>
+                  <td>{{ manufacturer[3] }}</td>
+                  <td>{{ manufacturer[4] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+        {% elif not vehicle_type %}
+        <br/> <a href={{ url_for('repairs_by') }}>Back to Previous</a>
+        <br />
+        <b>{{ manufacturer }}</b><br />
+          <table class ="table table-bordered table-hover" border="1" cellpadding="5" cellspacing="5">
+              <thead class="thead-light">
+              <tr>
+                  <th>No.</th>
+                  <th scope="col">Vehicle Type</th>
+                  <th scope="col">Count of Repairs</th>
+                  <th scope="col">Sum of All Part Costs</th>
+                  <th scope="col">Sum of all Labor Costs</th>
+                  <th scope="col">Sum of all Total Repair Costs</th>
+              </tr>
+              </thead>
+              <tbody>
+                {% for vehicle_type in vehicle_types %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td><a href="{{ url_for('repairs_by', manufacturer=manufacturer, vehicle_type=vehicle_type[0]) }}">{{ vehicle_type[0] }}</a></td>
+                    <td>{{ vehicle_type[1] }}</td>
+                    <td>{{ vehicle_type[2] }}</td>
+                    <td>{{ vehicle_type[3] }}</td>
+                    <td>{{ vehicle_type[4] }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+        {% else %}
+        <br /><a href="{{ url_for('repairs_by', manufacturer=manufacturer) }}">Back to Previous</a>
+        <br />
+        <b> {{ manufacturer }} - {{ vehicle_type }}</b><br />
+          <table class ="table table-bordered table-hover" border="1" cellpadding="5" cellspacing="5">
+              <thead class="thead-light">
+              <tr>
+                  <th>No.</th>
+                  <th scope="col">Model</th>
+                  <th scope="col">Count of Repairs</th>
+                  <th scope="col">Sum of All Part Costs</th>
+                  <th scope="col">Sum of all Labor Costs</th>
+                  <th scope="col">Sum of all Total Repair Costs</th>
+              </tr>
+              </thead>
+              <tbody>
+                {% for model in models %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ model[0] }}</td>
+                    <td>{{ model[1] }}</td>
+                    <td>{{ model[2] }}</td>
+                    <td>{{ model[3] }}</td>
+                    <td>{{ model[4] }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+        {% endif %}
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+    <title> Search Vehicle </title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        {% block content %}
+        <h1> Search Vehicle</h1>
+        <h4>There are {{ total_vehicles }} vehicles available for purchase</h4>
+        <form id ="searchbar" method="POST" action="/">
+            {% if is_logged_in %}
+                <input type="search" name="Vin" placeholder="Enter VIN">
+            {% endif %}
+
+            <select name="VehicleType">
+                <option selected disabled>Vehicle Type</option>
+                <option value="Car">Car</option>
+                <option value="Convertible">Convertible</option>
+                <option value="Truck">Truck</option>
+                <option value="Van/Minivan">Van/Minivan</option>
+                <option value="SUV">SUV</option>
+            </select>
+
+            <select name="ManufacturerName">
+                <option selected disabled>Manufacturer</option>
+                {% for manufacturer in manufacturers_list %}
+                    <option value="{{manufacturer}}">{{manufacturer}}</option>
+                {% endfor %}
+            </select>
+
+            <select name="Color" >
+                <option selected disabled>Color</option>
+                {% for color in colors_list %}
+                    <option value="{{ color }}">{{ color }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="ModelYear" >
+                <option selected disabled>Model Year</option>
+                {% for model_year in model_year_list %}
+                    <option value="{{ model_year }}">{{ model_year }}</option>
+                {% endfor %}
+            </select>
+
+            <input type="number" name="MinPrice" placeholder="Enter min price $">
+            <input type="number" name="MaxPrice" placeholder="Enter max price $">
+            <input type="search" name="Keyword" placeholder="Enter keyword">
+            <input type="submit" value="Search">
+        </form>
+
+        {% if results %}
+            <h2>Search results:</h2>
+            {% if is_owner_manager %}
+            <div class="filter">
+                <select id="filter_availability" onchange="FilterAvailability()">
+                    <option value="l" selected>View All</option>
+                    <option value="available">Available</option>
+                    <option value="sold">Sold</option>
+                </select>
+                <br><br>
+            </div>               
+            {% endif %}
+            <table class="buttom" id="search_results">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>VIN</th>
+                        <th>Vehicle Type</th>
+                        <th>Year</th>
+                        <th>Manufacturer</th>
+                        <th>Model</th>
+                        <th>Color</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                        <th>Keyword match</th>
+                        {% if is_owner_manager %}
+                        <th>Availability</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><a href={{"/vehicle_details/" + result[0] }}>{{ result[0] }}</a></td>
+                        <td>{{ result[1] }}</td>
+                        <td>{{ result[2] }}</td>
+                        <td>{{ result[3] }}</td>
+                        <td>{{ result[4] }}</td>
+                        <td>{{ result[5] }}</td>
+                        <td>{{ result[6] }}</td>
+                        <td>{{ result[7] }}</td>
+                        <td>{{ result[9] }}</td>
+                        {% if is_owner_manager %}
+                            <td>{{ result[8] }}</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <script>
+                    function FilterAvailability() {
+                        let input, filter, table, tr, td;
+                        input = document.getElementById("filter_availability");
+                        filter = input.value.toUpperCase();
+                        table = document.getElementById("search_results")
+                        tr = table.getElementsByTagName("tr")
+                        for (let i = 0; i < tr.length; i++) {
+                            td = tr[i].getElementsByTagName("td")[10];
+                            if (td) {
+                                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                                    tr[i].style.display = "";
+                                } else {
+                                    tr[i].style.display = "none";
+                                }
+                            }
+                        }
+                    }
+                </script>
+            </table>
+        {% endif %}
+        {% endblock %}
+    </body>
+</html>

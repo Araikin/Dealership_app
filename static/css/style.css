@@ -1,0 +1,180 @@
+.menu {
+    list-style-type: none;
+    background-color: rgb(35, 111, 182);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.left {float: left;}
+
+.right {float: right;}
+
+.left a, .right a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+.left a:hover {background-color: #111111;}
+
+.reports {list-style-type: none;}
+
+.required:after {
+    color: #e32;
+    content: ' *';
+}
+
+.add_vehicle {
+    display: block;
+    /* text-align:center; */
+    margin-left: 45%;
+}
+
+table {
+  width: 80%;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+}
+table, td {border: 1px solid #333;}
+thead, tfoot {background-color: green; color: white}
+
+
+/* font */
+.logo{
+  text-align:center;
+  font-weight: 700;
+  font-family: sans-serif;
+  color:#183558;
+}
+
+h1{
+  text-align:center;
+  font-weight: 400;
+  font-family: sans-serif;
+  color:#183558;
+}
+
+h2{
+  text-align:center;
+  font-weight: 400;
+  font-family: sans-serif;
+  color:#183558;
+}
+
+h3{
+  text-align:center;
+  font-weight: 400;
+  font-family: sans-serif;
+  color:#183558;
+}
+
+h4{
+  text-align:center;
+  font-weight: 400;
+  font-family: sans-serif;
+  color:#183558;
+}
+
+title {
+  color: dark rgb(35, 35, 43);
+  font-size: 16px;
+  font-family: sans-serif;
+  margin-top: 10px;
+  margin-bottom:10px;
+}
+
+a{
+  font-family: sans-serif;
+}
+
+th{
+  font-family: sans-serif;
+}
+
+b{
+  font-family: sans-serif;
+  font-weight: 550;
+  color:rgb(55, 56, 65);
+}
+
+/* layout */
+
+.row{
+  display: flex;
+  margin: 6px 12px;
+}
+
+.form{
+  text-align:center;
+  margin: 40px;
+}
+
+.formfield{
+  padding: 6px 12px;
+  border:rgb(35, 111, 182);
+  border-radius: 4px;
+  margin:4px;
+}
+
+.thead-light{
+  /* margin-left: 30%; */
+  text-align:center;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.list{
+  border-radius: 5px;
+  border-color:rgb(226, 232, 238);
+  background-color:rgb(226, 232, 238);
+  text-align:center;
+  margin-left:25%;
+  margin-right: 25%;
+  margin-top:30px;
+  margin-bottom:30px;
+  padding-top:30px;
+  padding-bottom:30px;
+}
+
+.filter{
+  margin-left:40%;
+}
+
+#filter_availability{
+  background-color:lightblue;  
+  height:30px; 
+  font-size: 16px;
+  width:35%;
+}
+
+#searchbar{
+  margin-left:10%;
+}
+#searchbar *{
+  font-size: 18px;
+}
+
+/* components */
+
+.button{
+  padding:6px 12px;
+  border:rgb(35, 111, 182);
+  border-radius: 4px;
+  margin:4px;
+}
+
+
+.reports_link, .reports_link:visited, .reports_link:hover, .reports_link:active {
+  color: darkblue;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 2.125em;
+}
+
+a {
+  text-decoration: none;
+}

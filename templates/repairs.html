@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title> Repairs </title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        {% block content %}
+        <h1> Repairs </h1>
+        <form action="{{ url_for('repairs') }}" method="post">
+            <label for="vin">Enter vin:
+                <input type="text" name="vin" required>
+            </label>
+            <label for="submit"></label>
+            <input type="submit" value="Find Vehicle" name="Lookup vehicle">
+        </form>
+        {% if vehicle_found %}
+            <h3>VEHICLE DETAILS</h3>
+            <div class="list">
+                <b>Vin</b>: {{ details[0] }} <br>
+                <b>Vehicle type</b>: {{ details[1] }} <br>
+                <b>Manufacturer</b>: {{ details[3] }} <br>
+                <b>Model name</b>: {{ details[4] }} <br>
+                <b>Model year</b>: {{ details[2] }} <br>
+                <b>Color(s)</b>: {{ details[5] }} <br>
+            </div>    
+            <br>
+            {% if not open_repair %}
+                <div class="add_repair">
+                    <form action="{{ url_for('repairs') }}" method = "POST">
+                        <fieldset>
+                            <legend><b>Create new Repair</b></legend>
+                            {% if 'currCustomerId' in session %}
+                                <p><b>Customer selected:</b></p>
+                                {% for row in data %}
+                                    {% if row[0] == 'Individual' %}
+                                        <p> <b>Name</b>: {{ row[1] }} {{ row[2] }} <br>
+                                            <b>Phone</b>: {{ row[6] }} <br>
+                                            <b>Email</b>: {{ row[7] }} <br>
+                                            <b>Address</b>: {{ row[8] }} <br>
+                                        </p>
+                                    {% elif row[0] == 'Business' %}
+                                        <p> <b>Company Name</b>: {{ row[3] }} <br>
+                                            <b>Primary Contact Name</b>: {{ row[4] }} <br>
+                                            <b>Primary Contact Title</b>: {{ row[5] }} <br>
+                                            <b>Phone</b>: {{ row[6] }} <br>
+                                            <b>Email</b>: {{ row[7] }} <br>
+                                            <b>Address</b>: {{ row[8] }} <br>
+                                        </p>
+                                    {% endif %}
+                                {% endfor %}
+                            <a href="{{ url_for('lookup_customer') }}">Select different customer</a><br>
+                            {% else %}
+                                <a href="{{ url_for('lookup_customer') }}">Select customer</a>
+                            {% endif %}
+                            <br>
+                            <label for="odometer">Odometer reading:
+                                <input type="number" min="0" step="1" name="odometer" placeholder="Odometer reading" required>
+                            </label>
+                            <input type="submit" value="Create" name="Create repair">
+                        </fieldset>
+                    </form>
+                </div>
+            {% else %}
+                <form action="{{ url_for('repairs') }}" method="POST">
+                    <fieldset>
+                        <legend><b>Update Repair</b></legend>
+                        <label for="labor_charges">Labor charges:
+                            <input type="number" name="labor_charges" min="{{ min_labor_charges }}" step="0.01" value="{{ labor_charges }}" required>
+                        </label><br>
+                        <label for="Description">Description:</label>
+                        <br>
+                        <textarea name="description" rows="3" required>{{ description }}</textarea>
+                        <br>
+                        <a href="{{ url_for('add_part', vin=vin) }}">Add part</a><br><br>
+                        <input type="submit" value="Update" name="Update repair">
+                        <input type="submit" value="Complete" name="Complete repair">
+                    </fieldset>
+                </form>
+            {% endif %}
+        {% endif %}
+        {% endblock %}
+    </body>
+</html>

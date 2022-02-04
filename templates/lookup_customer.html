@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title> Lookup/Add Customer </title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        {% block content %}
+        <form class="form" method="post">
+          <label for="Individual">
+            <input type="radio" name="CustomerType" id="Individual" value="Individual" onclick="ShowHideDiv()" />
+            Individual
+          </label>
+          <label for="Business">
+            <input type="radio" name="CustomerType" id="Business" value="Business" onclick="ShowHideDiv()" />
+            Business
+          </label>
+          <div id="IndividualChecked" style="display:none">
+            Driver License No:
+            <input type="text" name="DlNo" id="DlNo"/>
+            <input type="submit" name="lookup_action" value="Search">
+          </div>
+          <div id="BusinessChecked" style="display:none">
+            Tax ID No:
+            <input type="text" name="TaxId" id="TaxId"/>
+            <input type="submit" name="lookup_action" value="Search">
+          </div>
+          <script>
+            function ShowHideDiv() {
+              let chkIndividual = document.getElementById("Individual");
+              let individualChecked = document.getElementById("IndividualChecked");
+              individualChecked.style.display = chkIndividual.checked ? "block" : "none";
+              individualChecked.getElementsByTagName("input")[0].required = chkIndividual.checked;
+
+              let chkBusiness = document.getElementById("Business");
+              let businessChecked = document.getElementById("BusinessChecked");
+              businessChecked.style.display = chkBusiness.checked ? "block" : "none";
+              businessChecked.getElementsByTagName("input")[0].required = chkBusiness.checked;
+            }
+          </script>
+        <!-- Display Customer Info -->
+          <div class="list">
+            {% for row in data %}
+              {% if row[0] == 'Individual' %}
+              <p> <b>Name</b>: {{ row[1] }} {{ row[2] }} <br>
+                  <b>Phone</b>: {{ row[6] }} <br>
+                  <b>Email</b>: {{ row[7] }} <br>
+                  <b>Address</b>: {{ row[8] }} <br>
+                  <input type="submit" name="choose_customer" value="Choose Customer">
+              </p>
+              {% elif row[0] == 'Business' %}
+              <p> <b>Company Name</b>: {{ row[3] }} <br>
+                  <b>Primary Contact Name</b>: {{ row[4] }} <br>
+                  <b>Primary Contact Title</b>: {{ row[5] }} <br>
+                  <b>Phone</b>: {{ row[6] }} <br>
+                  <b>Email</b>: {{ row[7] }} <br>
+                  <b>Address</b>: {{ row[8] }} <br>
+                  <input type="submit" name="choose_customer" value="Choose Customer">
+              </p>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </form>
+        {% if message %}
+        <p>{{ message }} <a href="{{ url_for('add_customer') }}">Add Customer:</a> </p>
+        <div>
+        </div>
+        {% endif %}
+        {% endblock %}
+    </body>
+</html>

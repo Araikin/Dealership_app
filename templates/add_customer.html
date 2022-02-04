@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title> Add Customer </title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        {% block content %}
+        <form method="post">
+          <label for="Individual">
+            <input type="radio" name="CustomerType" id="Individual" value="Individual" onclick="ShowHide()" />
+            Individual
+          </label>
+          <label for="Business">
+            <input type="radio" name="CustomerType" id="Business" value="Business" onclick="ShowHide()" />
+            Business
+          </label>
+          <div id="IndividualChecked" style="display:none">
+            First Name: <input type="text" name="FirstName" id="FirstName" />
+            Last Name: <input type="text" name="LastName" id="LastName" />
+            Driver License No: <input type="text" name="DlNo" id="DlNo" /> <br />
+          </div>
+          <div id="BusinessChecked" style="display:none">
+            Business Name: <input type="text" name="BusinessName" id="BusinessName" />
+            Tax ID No: <input type="text" name="TaxId" id="TaxId" /> <br />
+            Primary Contact Name: <input type="text" name="PrimaryContactName" id="PrimaryContactName" />
+            Primary Contact Title: <input type="text" name="PrimaryContactTitle" id="PrimaryContactTitle" /> <br />
+          </div>
+          <div id="CommonDetails" style="display:none">
+            Phone: <input type="tel" name="Phone" id="Phone" placeholder="1234568901" pattern="[0-9]{10}" title="Must be 10 digits, e.g. 0123456789" required/>
+            Email: <input type="email" name="Email" id="Email"/> <br />
+            <b> Address </b> <br/>
+            Street: <input type="text" name="Street" id="Street" required/>
+            City: <input type="text" name="City" id="City" required/>
+            State: <input type="text" name="State" id="State" required/>
+            Postal Code: <input type="text" name="PostalCode" id="PostalCode" required/> <br />
+            <input type="submit" name="add" value="Add Customer">
+          </div>
+        </form>
+        <script>
+          function ClearFields() {
+            document.getElementsByName("Phone")[0].value = "";
+            document.getElementsByName("Email")[0].value = "";
+            document.getElementsByName("State")[0].value = "";
+            document.getElementsByName("PostalCode")[0].value = "";
+            document.getElementsByName("City")[0].value = "";
+            document.getElementsByName("Street")[0].value = "";
+            document.getElementsByName("FirstName")[0].value = "";
+            document.getElementsByName("LastName")[0].value = "";
+            document.getElementsByName("DlNo")[0].value = "";
+            document.getElementsByName("BusinessName")[0].value = "";
+            document.getElementsByName("TaxId")[0].value = "";
+            document.getElementsByName("PrimaryContactName")[0].value = "";
+            document.getElementsByName("PrimaryContactTitle")[0].value = "";
+          }
+
+          function setRequired(val, id) {
+            let input = document.getElementById(id).getElementsByTagName("input");
+            for(let i = 0; i < input.length; i++) {
+                input[i].required = val
+            }
+          }
+
+          function ShowHide() {
+            let chkIndividual = document.getElementById("Individual");
+            let individualChecked = document.getElementById("IndividualChecked");
+            individualChecked.style.display = chkIndividual.checked ? "block" : "none";
+            if (chkIndividual.checked) {
+              setRequired(true, "IndividualChecked");
+              setRequired(false, "BusinessChecked");
+              ClearFields();
+            }
+            let chkBusiness = document.getElementById("Business");
+            let businessChecked = document.getElementById("BusinessChecked");
+            businessChecked.style.display = chkBusiness.checked ? "block" : "none";
+            if (chkBusiness.checked) {
+              setRequired(true, "BusinessChecked");
+              setRequired(false, "IndividualChecked");
+              ClearFields();
+            }
+            let commonDetails = document.getElementById("CommonDetails");
+            commonDetails.style.display = (chkIndividual.checked || chkBusiness.checked) ? "block" : "none";
+          }
+        </script>
+        {% if message %}
+          <p> {{ message }} </p>
+          {% if not data %}
+            Try <a href="{{ url_for('lookup_customer') }}">Lookup Customer</a>
+          {% endif %}
+        {% endif %}
+        {% endblock %}
+    </body>
+
+</html>

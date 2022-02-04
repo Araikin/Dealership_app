@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title> Sell Vehicle </title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        {% block content %}
+
+        <h1> Sell Vehicle </h1>
+    <div class="list">
+        {% if 'currCustomerId' in session %}
+            {% for row in data %}
+                {% if row[0] == 'Individual' %}
+                    <p> <b>Name</b>: {{ row[1] }} {{ row[2] }} <br>
+                        <b>Phone</b>: {{ row[6] }} <br>
+                        <b>Email</b>: {{ row[7] }} <br>
+                        <b>Address</b>: {{ row[8] }} <br>
+                    </p>
+                {% elif row[0] == 'Business' %}
+                    <p> <b>Company Name</b>: {{ row[3] }} <br>
+                        <b>Primary Contact Name</b>: {{ row[4] }} <br>
+                        <b>Primary Contact Title</b>: {{ row[5] }} <br>
+                        <b>Phone</b>: {{ row[6] }} <br>
+                        <b>Email</b>: {{ row[7] }} <br>
+                        <b>Address</b>: {{ row[8] }} <br>
+                    </p>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <a href="{{ url_for('lookup_customer') }}">Select customer</a>
+        {% endif %}
+        <form action="{{ url_for('sell_vehicle', vin=vin) }}" method="post" class="">
+            <p>Vehicle vin: {{ vin }}</p>
+            <p>Vehicle invoice price: ${{ invoice_price }} </p>
+            <label for="price">Enter price:
+                <input type="number" name="price" min="{{ min_sale_price }}" step="any" required>
+            </label>
+            <br><br>
+            <input type="submit" value="Sell Vehicle">
+        </form>
+    </div>
+        {% with massages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <p>{{msg}}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% endblock %}
+    </body>
+</html>

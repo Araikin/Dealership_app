@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title> Reports </title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        {% block content %}
+        <h1> Reports </h1>
+            <ul class="reports">
+                <li><a class="reports_link" href={{ url_for('sales_by_color') }}>Sales by Color</a></li>
+                <li><a class="reports_link" href={{ url_for('sales_by_type') }}>Sales by Type</a></li>
+                <li><a class="reports_link" href={{ url_for('sales_by_manufacturer') }}>Sales by Manufacturer </a></li>
+                <li><a class="reports_link" href={{ url_for('gross_customer_income') }}>Gross Customer Income</a></li>
+                <li><a class="reports_link" href={{ url_for('repairs_by') }}>Repairs by Manufacturer/Type/Model</a></li>
+                <li><a class="reports_link" href={{ url_for('below_cost_sales') }}>Below Cost Sales</a></li>
+                <li><a class="reports_link" href={{ url_for('avg_time_in_inventory') }}>Average Time in Inventory</a></li>
+                <li><a class="reports_link" href={{ url_for('parts_statistics') }}>Parts Statistics</a></li>
+                <li><a class="reports_link" href={{ url_for('monthly_sales') }}>Monthly Sales</a></li>
+            </ul>
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title> Jaunty Jalopies </title>
+        <link rel="stylesheet" href="{{  url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/vanillaSelectBox.css') }}">
+        <script type="text/javascript" src="../static/js/vanillaSelectBox.js"></script>
+    </head>
+    <body>
+        <header>
+            <div class="header">
+                <h1 class="logo"> Jaunty Jalopies </h1>
+                <strong>
+                    <nav>
+                        <ul class="menu">
+                            <li class="left"><a href="{{ url_for('search') }}">Search</a></li>
+                            {% if session.get("usertype", None) == "owner" %}
+                                <li class="left"><a href="{{ url_for('reports') }}">Reports</a></li>
+                                <li class="left"><a href="{{ url_for('repairs') }}"> Enter Repair</a></li>
+                                <li class="left"><a href="{{ url_for('add_vehicle') }}">Add Vehicle</a></li>
+                            {% elif session.get("usertype", None) == "manager" %}
+                                <li class="left"><a href="{{ url_for('reports') }}">Reports</a></li>
+                            {% elif session.get("usertype", None) == "servicewriter" %}
+                                <li class="left"><a href="{{ url_for('repairs') }}">Enter Repair</a></li>
+                            {% elif session.get("usertype", None) == "inventoryclerk" %}
+                                <li class="left"><a href="{{ url_for('add_vehicle') }}">Add Vehicle</a></li>
+                            {% endif %}
+                            {% if session.get("username", None) == None %}
+                                <li class="right">
+                                    <form action="{{ url_for('login') }}" method="post">
+                                        <div class="row">
+                                            <div>
+                                                <input class = "formfield" type="text" name="username" placeholder="Username" required>
+                                            </div>
+                                            <div>
+                                                <input class = "formfield" type="password" name="password" placeholder="Password" required>
+                                            </div>
+                                            <button class ="button" type="submit">Log In</button>
+                                        </div>
+                                    </form>
+                                </li>
+                            {% else %}
+                                <li class="right"><a href="{{ url_for('logout') }}">Logout</a></li>
+                                <li class="right"><a>Hi, {{ session.get("username") }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </strong>
+            </div>
+        </header>
+        {% if message %}
+            <p class="message">{{ message }} </p>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>

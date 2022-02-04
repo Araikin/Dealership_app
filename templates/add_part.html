@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title> Add part </title>
+    </head>
+    <body>
+        {% extends "base.html" %}
+        {% block content %}
+            <h1> Add part </h1>
+            <form method = "POST">
+                 <fieldset>
+                     <legend>Add Part</legend>
+                     <label for="part_no">Part number:</label>
+                     <input type = "text" name = "part_no" placeholder = "Part number" required><br>
+                     <label for="vendor_name">Vendor name:</label>
+                     <input type = "text" name = "vendor_name" placeholder = "Vendor name" required> <br>
+                     <label for="Price">Price:</label>
+                     <input type = "number" name = "price" min="0.00" step="0.01" placeholder = "Part price" required> <br>
+                     <label for="quantity">Quantity:</label>
+                     <input type = "number" name = "quantity" min="1" step="1" placeholder = "Quantity" required> <br>
+                     <input type="submit" value="Add part">
+                 </fieldset>
+            </form>
+        {% endblock %}
+    </body>
+</html>
